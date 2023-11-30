@@ -8,14 +8,6 @@ const asyncHandler =
     Promise.resolve(callback(req, res, next)).catch(next);
   };
 
-const delay = (ms: number) => {
-  return new Promise((resolve, reject) =>
-    setTimeout(() => {
-      reject(new Error('delay error'));
-    }, ms)
-  );
-};
-
 export const app = express();
 app.use(cookieParser());
 
