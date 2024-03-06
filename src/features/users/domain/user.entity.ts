@@ -26,7 +26,7 @@ export type UserDocument = HydratedDocument<User>;
 
 const walletSchema = new mongoose.Schema<Wallet>({
   createdAt: { type: Date, required: true },
-  balance: { type: Number, required: true },
+  balance: { type: Number, required: true, min: 0 },
   currency: { type: String, enum: Currency, required: true },
 });
 
