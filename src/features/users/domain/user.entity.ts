@@ -1,14 +1,13 @@
 import * as mongoose from 'mongoose';
 import { Model, model, HydratedDocument, ObjectId } from 'mongoose';
 
-enum Currency {
+export enum Currency {
   BYN = 'BYN',
   USD = 'USD',
   BTC = 'BTC',
 }
 
-type Wallet = {
-  _id: ObjectId;
+export type Wallet = {
   createdAt: Date;
   balance: number;
   currency: Currency;
@@ -30,14 +29,10 @@ const walletSchema = new mongoose.Schema<Wallet>({
   currency: { type: String, enum: Currency, required: true },
 });
 
-const userSchema = new mongoose.Schema<User>(
-  {
-    name: { type: String, required: true },
-    age: { type: Number, required: true },
-    wallets: { type: [walletSchema] },
-  },
-);
-
-
+const userSchema = new mongoose.Schema<User>({
+  name: { type: String, required: true },
+  age: { type: Number, required: true },
+  wallets: { type: [walletSchema] },
+});
 
 export const UserModel = model<User, UserModel>('users-l4', userSchema);
