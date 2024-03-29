@@ -37,7 +37,7 @@ class UserEntity {
     this.id = ''; //uuid for example
   }
 
-  createUser(dto: CreateUserDto) {
+  static createUser(dto: CreateUserDto) {
     const user = new UserEntity(dto.name, dto.age, []);
 
     if (user.age < 16) {
@@ -54,6 +54,10 @@ class UserEntity {
     return user;
   }
 
+  static init(dto: UserEntity) {
+    return new UserEntity(dto.name, dto.age, dto.wallets);
+  }
+
   convertMoney(fromWalletId: string, toWalletId: string, amount: number) {
     const fromWallet = this.wallets.find((wallet) => wallet.id.toString() === fromWalletId);
 
@@ -68,4 +72,46 @@ class UserEntity {
   }
 
   //other methods
+}
+
+//service, repository example
+class UsersRepository {
+  async save(user: UserEntity): Promise<void> {
+    //insert or update user in DB
+    return Promise.resolve();
+  }
+
+  async findById(id: string): Promise<UserEntity | null> {
+    //get user data from bd
+    //const result = await db.findOne(id)
+
+    //create UserEntity instance and return
+    return Promise.resolve(
+      UserEntity.init({
+        /*...result*/
+      } as UserEntity)
+    );
+  }
+}
+
+export class UserService {
+  constructor(private userRepository: UsersRepository) {}
+
+  async createUser(dto: CreateUserDto) {
+    const user = UserEntity.createUser(dto);
+
+    await this.userRepository.save(user);
+  }
+
+  async convertMoney(id: string, from: string, to: string) {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new Error('not found');
+    }
+
+    user.convertMoney(from, to, 100);
+
+    await this.userRepository.save(user);
+  }
 }
