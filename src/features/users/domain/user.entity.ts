@@ -1,19 +1,7 @@
 import * as mongoose from 'mongoose';
-import { Model, model, HydratedDocument, ObjectId } from 'mongoose';
+import { HydratedDocument, model, Model } from 'mongoose';
 import { CreateUserDto } from './dto';
-
-enum Currency {
-  BYN = 'BYN',
-  USD = 'USD',
-  BTC = 'BTC',
-}
-
-type Wallet = {
-  _id: ObjectId;
-  createdAt: Date;
-  balance: number;
-  currency: Currency;
-};
+import { Wallet, WalletModel, walletSchema, walletStatic } from './wallet.entity';
 
 type User = {
   name: string;
@@ -27,24 +15,6 @@ type UserStatics = typeof userStatics;
 type UserModel = Model<User, {}, UserMethods> & UserStatics;
 
 export type UserDocument = HydratedDocument<User, UserMethods>;
-
-const walletSchema = new mongoose.Schema<Wallet>({
-  createdAt: { type: Date, required: true },
-  balance: { type: Number, required: true },
-  currency: { type: String, enum: Currency, required: true },
-});
-
-type WalletModel = Model<Wallet, {}, {}> & typeof walletStatic;
-
-const walletStatic = {
-  createDefaultWallet() {
-    return new WalletModel({ createdAt: new Date(), balance: 100, currency: Currency.BTC });
-  },
-};
-
-walletSchema.statics = walletStatic;
-
-const WalletModel = model<Wallet, WalletModel>('wallet', walletSchema, 'users-l4');
 
 const userSchema = new mongoose.Schema<User, UserModel, UserMethods>(
   {
