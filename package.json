@@ -41,7 +41,7 @@
     "start": "node dist/index.js",
     "start-dev": "nodemon --inspect dist/index.js",
     "watch-dev": "tsc -w",
-    "jest": "jest -i"
+    "jest": "jest --config jest-unit.json -i"
   },
   "devDependencies": {
     "@types/cors": "2.8.12",
