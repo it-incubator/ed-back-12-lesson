@@ -39,7 +39,7 @@ class Account {
 }
 
 class SavingsAccount extends Account {
-  private interestRate: number;
+  private interestRate: number; //процентная ставка
 
   constructor(
     ownerName: string,
@@ -53,6 +53,7 @@ class SavingsAccount extends Account {
   }
 
   public addInterest(): void {
+    //начислить за проценты
     const interest = this.calculateInterest(this.interestRate);
     this.deposit(interest);
   }
